@@ -15,81 +15,86 @@ const PaymentCard = ({ current, label, landing }: Props) => {
     <div
       className={cn(
         label !== current
-          ? "bg-in-active"
-          : "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500",
-        "p-[2px] rounded-xl overflow-hidden bg-gray-800"
+          ? "border border-muted bg-background-90"
+          : "border-2 border-indigo-500",
+        "rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all"
       )}
     >
       <div
         className={cn(
-          landing && "radial--gradient--pink",
-          "flex flex-col rounded-xl pl-5 py-5 pr-10 bg-background-90 h-full"
+          landing ? "bg-background" : "bg-background-90",
+          "flex flex-col justify-between rounded-2xl px-6 py-6 h-full min-h-[400px]"
         )}
       >
+        {/* Heading */}
         {landing ? (
-          <h2 className="text-2xl">
-            {label === "PRO" && "Premium Plan"}
-            {label === "FREE" && "Standard"}
+          <h2 className="text-2xl font-bold mb-3 text-foreground">
+            {label === "PRO" ? "Premium Plan" : "Standard Plan"}
           </h2>
         ) : (
-          <h2 className="text-2xl">
-            {label === current
-              ? "Your Current Plan"
-              : current === "PRO"
-              ? "Downgrade"
-              : "Upgrade"}
+          <h2 className="text-2xl font-bold mb-3 text-foreground">
+            {label === current ? "Your Current Plan" : current === "PRO" ? "Downgrade" : "Upgrade"}
           </h2>
         )}
-        <p className="text-text-secondary text-sm mb-2">
-          This is what your plan covers for automations and Ai features
+
+        {/* Subtext */}
+        <p className="text-muted-foreground text-sm mb-4">
+          Covers automations and AI features
         </p>
+
+        {/* Plan Type */}
         {label === "PRO" ? (
-          <span className="bg-gradient-to-r text-3xl from-indigo-500 via-purple-500 font-bold to-pink-500 bg-clip-text text-transparent ">
+          <span className="text-4xl font-extrabold text-indigo-500 mb-4">
             Smart AI
           </span>
         ) : (
-          <p className="font-bold mt-2 text-text-secondary">Standard</p>
+          <p className="text-xl font-semibold text-muted-foreground mb-4">
+            Standard
+          </p>
         )}
+
+        {/* Pricing */}
         {label === "PRO" ? (
-          <p className="mb-2">
-            <b className="text-xl">$99</b>/month
+          <p className="text-2xl font-bold mb-4 text-foreground">
+            $99<span className="text-base font-medium">/month</span>
           </p>
         ) : (
-          <p className="text-xl mb-2">Free</p>
+          <p className="text-2xl font-bold mb-4 text-foreground">Free</p>
         )}
 
-        {PLANS[label === "PRO" ? 1 : 0].features.map((i) => (
-          <p key={i} className="mt-2 text-muted-foreground flex gap-2 ">
-            <CircleCheck className="text-indigo-500" />
-            {i}
-          </p>
-        ))}
+        {/* Features List */}
+        <div className="flex flex-col gap-3 mb-6">
+          {PLANS[label === "PRO" ? 1 : 0].features.map((i) => (
+            <div key={i} className="flex items-center gap-3 text-muted-foreground text-sm">
+              <CircleCheck className="text-indigo-500 w-5 h-5" />
+              {i}
+            </div>
+          ))}
+        </div>
 
+        {/* Button */}
         {landing ? (
           <Button
             className={cn(
-              "rounded-full mt-5",
+              "w-full rounded-full font-semibold text-base py-3",
               label === "PRO"
-                ? "bg-gradient-to-r from-indigo-500 text-white via-purple-500 to-pink-500"
-                : "bg-background-80 text-white hover:text-background-80"
+                ? "bg-indigo-600 hover:bg-indigo-700 text-white"
+                : "bg-muted text-foreground hover:bg-muted-foreground"
             )}
           >
-            {label === current
-              ? "Get Started"
-              : current === "PRO"
-              ? "Free"
-              : "Get Started"}
+            {label === current ? "Get Started" : current === "PRO" ? "Free" : "Get Started"}
           </Button>
         ) : (
           <Button
-            className="rounded-full mt-5 bg-background-80 text-white hover:text-background-80"
+            className={cn(
+              "w-full rounded-full font-semibold text-base py-3",
+              label === current
+                ? "bg-muted text-foreground"
+                : "bg-indigo-600 hover:bg-indigo-700 text-white"
+            )}
             disabled={label === current}
           >
-            {label === current
-              ? "Active"
-              : current === "PRO"
-              ? "Downgrade"
-              : "Upgrade"}
+            {label === current ? "Active" : current === "PRO" ? "Downgrade" : "Upgrade"}
           </Button>
         )}
       </div>
